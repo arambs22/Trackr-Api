@@ -2,6 +2,7 @@ package com.aram.taskflow.controller;
 
 import com.aram.taskflow.dto.BoardResponse;
 import com.aram.taskflow.dto.CreateBoardRequest;
+import com.aram.taskflow.dto.UpdateBoardRequest;
 import com.aram.taskflow.service.BoardService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -36,5 +37,19 @@ public class BoardController {
             @PathVariable Long id
     ) {
         return boardService.getById((String) auth.getPrincipal(), id);
+    }
+
+    @PutMapping("/{id}")
+    public BoardResponse update(
+            Authentication auth,
+            @PathVariable Long id,
+            @Valid @RequestBody UpdateBoardRequest req
+    ) {
+        return boardService.update((String) auth.getPrincipal(), id, req);
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(Authentication auth, @PathVariable Long id) {
+        boardService.delete((String) auth.getPrincipal(), id);
     }
 }

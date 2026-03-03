@@ -4,6 +4,7 @@ import com.aram.taskflow.domain.Board;
 import com.aram.taskflow.domain.User;
 import com.aram.taskflow.dto.BoardResponse;
 import com.aram.taskflow.dto.CreateBoardRequest;
+import com.aram.taskflow.dto.UpdateBoardRequest;
 import com.aram.taskflow.repository.BoardRepository;
 import com.aram.taskflow.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -65,5 +66,34 @@ public class BoardService {
                 board.getName(),
                 board.getCreatedAt()
         );
+    }
+
+    public BoardResponse update(String email, Long id, UpdateBoardRequest req) {
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow();
+
+        Board board = boardRepository.findByIdAndOwner(id, user)
+                .orElseThrow(() -> new IllegalArgumentException("Board no encontrada"));
+
+        board.setName(req.name());
+        boardRepository.save(board);
+
+        return new BoardResponse(
+                board.getId(),
+                board.getName(),
+                board.getCreatedAt()
+        );
+    }
+
+    public void delete(String email, Long id) {
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow();
+
+        Board board = boardRepository.findByIdAndOwner(id, user)
+                .orElseThrow(() -> new IllegalArgumentException("Board no encontrada"));
+
+        boardRepository.delete(board);
     }
 }
