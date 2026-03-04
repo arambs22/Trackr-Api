@@ -26,7 +26,17 @@ public class SecurityConfig {
                         .accessDeniedHandler((req, res, e) -> res.sendError(403, "Forbidden"))
                 )
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**", "/health").permitAll()
+                        .requestMatchers(
+                                "/auth/**",
+                                "/health",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html",
+                                "/v3/api-docs",
+                                "/v3/api-docs/**",
+                                "/webjars/**",
+                                "/swagger-resources/**",
+                                "/swagger-resources"
+                        ).permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
