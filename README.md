@@ -8,7 +8,7 @@
 ![Spring Security](https://img.shields.io/badge/Spring%20Security-JWT-brightgreen?logo=springsecurity&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Docker-4169E1?logo=postgresql&logoColor=white)
 ![Swagger](https://img.shields.io/badge/Swagger-OpenAPI-85EA2D?logo=swagger&logoColor=black)
-![CI](https://github.com/YOUR_USER/trackr-api/actions/workflows/ci.yml/badge.svg)
+![CI](https://img.shields.io/github/actions/workflow/status/arambs22/Trackr-Api/ci.yml?label=CI&logo=githubactions&logoColor=white)
 
 ---
 
