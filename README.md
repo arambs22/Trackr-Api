@@ -122,25 +122,27 @@ http://localhost:8080/swagger-ui/index.html
 flowchart TD
     A([🚀 Inicio]) --> B
 
-    B["📝 POST /auth/register\nCrea tu cuenta"]
+    B["📝 POST /auth/register - Crea tu cuenta"]
     B --> C
 
-    C["🔑 POST /auth/login\nObtén tu JWT Token"]
+    C["🔑 POST /auth/login - Obtén tu JWT Token"]
     C --> D
 
     D(["🎫 Token en mano"])
     D --> E
 
-    E["📋 Usa el token en cada request\nAuthorization: Bearer &lt;token&gt;"]
-    E --> F & G & H
+    E["📋 Usa el token en cada request - Authorization: Bearer &lt;token&gt;"]
+    E --> F 
 
-    F["📌 Crear Board\nPOST /boards"]
-    G["📂 Crear List\nPOST /boards/:id/lists"]
-    H["✅ Crear Task\nPOST /boards/:id/lists/:id/tasks"]
+    F["📌 Crear 'Board' - POST /boards"]
+    F --> G & H
 
-    F & G & H --> I
+    G["📂 Crear 'List' - POST /boards/{:id}/lists"]
+    H["✅ Crear 'Task' - POST /boards/{:id}/lists/{:id}/tasks"]
 
-    I["🔀 Mover Task entre listas\nPATCH .../tasks/:id/move"]
+    G & H --> I
+
+    I["🔀 Mover Task entre listas - PATCH .../tasks/{:id}/move"]
     I --> J([✨ Listo])
 
     style A fill:#4CAF50,color:#fff,stroke:none
