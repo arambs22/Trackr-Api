@@ -1,4 +1,4 @@
-package com.aram.taskflow.taskflow_api;
+package com.aram.taskflow;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
