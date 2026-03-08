@@ -3,6 +3,9 @@ package com.aram.taskflow.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "board_lists")
 @Getter @Setter
@@ -17,11 +20,14 @@ public class BoardList {
     @Column(nullable = false)
     private String name;
 
-    // Para ordenar columnas: 0,1,2...
     @Column(nullable = false)
     private Integer position;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "board_id")
     private Board board;
+
+    @OneToMany(mappedBy = "list", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private List<Task> tasks = new ArrayList<>();
 }
