@@ -1,7 +1,49 @@
 # Trackr-Api
 
-Backend API tipo Trello para manejar **Boards → Lists → Tasks**, con **JWT Auth**, **PostgreSQL** y **Swagger UI**.  
-Incluye **tests** y **CI (GitHub Actions)** para validar automáticamente que cada cambio no rompa el sistema.
+> Backend API tipo Trello para manejar **Boards → Lists → Tasks**, con **JWT Auth**, **PostgreSQL** y **Swagger UI**.  
+> Incluye **tests** y **CI (GitHub Actions)** para validar automáticamente que cada cambio no rompa el sistema.
+
+![Java](https://img.shields.io/badge/Java-17-orange?logo=openjdk&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.x-brightgreen?logo=springboot&logoColor=white)
+![Spring Security](https://img.shields.io/badge/Spring%20Security-JWT-brightgreen?logo=springsecurity&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Docker-4169E1?logo=postgresql&logoColor=white)
+![Swagger](https://img.shields.io/badge/Swagger-OpenAPI-85EA2D?logo=swagger&logoColor=black)
+![CI](https://github.com/YOUR_USER/trackr-api/actions/workflows/ci.yml/badge.svg)
+
+---
+
+## Data Model
+
+```mermaid
+erDiagram
+    USER ||--o{ BOARD : owns
+    BOARD ||--o{ LIST : contains
+    LIST  ||--o{ TASK : contains
+
+    USER {
+        long id
+        string username
+        string email
+        string password
+    }
+    BOARD {
+        long id
+        string name
+        long userId
+    }
+    LIST {
+        long id
+        string name
+        int position
+        long boardId
+    }
+    TASK {
+        long id
+        string title
+        string description
+        long listId
+    }
+```
 
 ---
 
@@ -63,12 +105,43 @@ Documentación interactiva de la API:
 http://localhost:8080/swagger-ui/index.html
 ```
 
+![Swagger UI Preview](docs/swagger-preview.png)
+
 ### Usar autenticación JWT en Swagger
 
 1. Ejecuta `POST /auth/login` o `POST /auth/register`
 2. Copia el token que devuelve
 3. Presiona **Authorize** en Swagger
 4. Pega el token JWT
+
+---
+
+## Autenticación JWT
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant C as Client
+    participant A as Trackr API
+
+    C->>A: POST /auth/register (username, password)
+    A-->>C: 201 Created
+
+    C->>A: POST /auth/login (username, password)
+    A-->>C: 200 OK + JWT Token
+
+    C->>A: POST /boards (Authorization: Bearer <token>)
+    A-->>C: 201 Created { board }
+
+    C->>A: POST /boards/{id}/lists (Bearer <token>)
+    A-->>C: 201 Created { list }
+
+    C->>A: POST /boards/{id}/lists/{id}/tasks (Bearer <token>)
+    A-->>C: 201 Created { task }
+
+    C->>A: PATCH .../tasks/{id}/move (Bearer <token>)
+    A-->>C: 200 OK { task moved }
+```
 
 ---
 
@@ -80,15 +153,6 @@ En la carpeta `postman/` están los archivos:
 - `Local.postman_environment.json`
 
 Importa ambos en Postman.
-
-### Flujo recomendado
-
-1. `POST /auth/register`
-2. `POST /auth/login`
-3. `POST /boards`
-4. `POST /boards/{boardId}/lists`
-5. `POST /boards/{boardId}/lists/{listId}/tasks`
-6. `PATCH /boards/{boardId}/lists/{listId}/tasks/{taskId}/move`
 
 ---
 
@@ -141,7 +205,7 @@ Para correr los tests localmente:
 mvn test
 ```
 
-Los tests usan H2 in-memory database, por lo que no dependen de PostgreSQL.
+✅ Los tests usan **H2 in-memory database**, por lo que no dependen de PostgreSQL.
 
 ---
 
