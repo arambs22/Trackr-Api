@@ -119,28 +119,34 @@ http://localhost:8080/swagger-ui/index.html
 ## Autenticación JWT
 
 ```mermaid
-sequenceDiagram
-    autonumber
-    participant C as Client
-    participant A as Trackr API
+flowchart TD
+    A([🚀 Inicio]) --> B
 
-    C->>A: POST /auth/register (username, password)
-    A-->>C: 201 Created
+    B["📝 POST /auth/register\nCrea tu cuenta"]
+    B --> C
 
-    C->>A: POST /auth/login (username, password)
-    A-->>C: 200 OK + JWT Token
+    C["🔑 POST /auth/login\nObtén tu JWT Token"]
+    C --> D
 
-    C->>A: POST /boards (Authorization: Bearer <token>)
-    A-->>C: 201 Created { board }
+    D(["🎫 Token en mano"])
+    D --> E
 
-    C->>A: POST /boards/{id}/lists (Bearer <token>)
-    A-->>C: 201 Created { list }
+    E["📋 Usa el token en cada request\nAuthorization: Bearer &lt;token&gt;"]
+    E --> F & G & H
 
-    C->>A: POST /boards/{id}/lists/{id}/tasks (Bearer <token>)
-    A-->>C: 201 Created { task }
+    F["📌 Crear Board\nPOST /boards"]
+    G["📂 Crear List\nPOST /boards/:id/lists"]
+    H["✅ Crear Task\nPOST /boards/:id/lists/:id/tasks"]
 
-    C->>A: PATCH .../tasks/{id}/move (Bearer <token>)
-    A-->>C: 200 OK { task moved }
+    F & G & H --> I
+
+    I["🔀 Mover Task entre listas\nPATCH .../tasks/:id/move"]
+    I --> J([✨ Listo])
+
+    style A fill:#4CAF50,color:#fff,stroke:none
+    style D fill:#2196F3,color:#fff,stroke:none
+    style J fill:#4CAF50,color:#fff,stroke:none
+    style E fill:#FFF3CD,color:#333,stroke:#FFC107
 ```
 
 ---
